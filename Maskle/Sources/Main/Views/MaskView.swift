@@ -21,72 +21,53 @@ struct MaskView: View {
     @State private var isHistorySavedMessagePresented = false
 
     var body: some View {
-        ScrollView {
-            @Bindable var maskSessionStore = maskSessionStore
-            VStack(alignment: .leading, spacing: 16) {
-                GroupBox("Original text") {
-                    TextEditor(text: $viewModel.sourceText)
-                        .frame(minHeight: 180)
-                        .overlay {
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(.quaternary)
-                        }
-                        .overlay(alignment: .topLeading) {
-                            if viewModel.sourceText.isEmpty {
-                                Text("Paste text that includes sensitive content.")
-                                    .foregroundStyle(.secondary)
-                                    .padding(12)
-                            }
-                        }
-                }
+        @Bindable var maskSessionStore = maskSessionStore
+        List {
+            Section("Original text") {
+                TextEditor(text: $viewModel.sourceText)
+                    .frame(minHeight: 200)
+            }
 
-                let mappingCount = maskSessionStore.manualRules.count
-                if mappingCount > .zero {
-                    GroupBox("Manual mappings in use") {
-                        HStack {
-                            Text("Mappings")
-                            Spacer()
-                            Text("\(mappingCount)")
-                                .foregroundStyle(.secondary)
-                        }
+            let mappingCount = maskSessionStore.manualRules.count
+            if mappingCount > .zero {
+                Section("Manual mappings") {
+                    HStack {
+                        Text("Mappings")
+                        Spacer()
+                        Text("\(mappingCount)")
+                            .foregroundStyle(.secondary)
                     }
-                }
-
-                GroupBox("Note") {
-                    TextField(
-                        "Optional memo for this session",
-                        text: $viewModel.note
-                    )
-                    .textFieldStyle(.roundedBorder)
-                }
-
-                HStack {
-                    Spacer()
-                    Button {
-                        viewModel.anonymize(
-                            context: context,
-                            settingsStore: settingsStore,
-                            manualRules: maskSessionStore.manualRules
-                        )
-                        isHistorySavedMessagePresented = settingsStore.isHistoryAutoSaveEnabled
-                    } label: {
-                        Label("Anonymize", systemImage: "wand.and.stars")
-                            .frame(maxWidth: .infinity)
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .disabled(viewModel.sourceText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
-                    Spacer()
-                }
-
-                if let result = viewModel.result {
-                    summaryView(
-                        result: result,
-                        session: viewModel.lastSavedSession
-                    )
-                    maskedOutputView(result: result)
                 }
             }
-            .padding()
+
+            Section("Note") {
+                TextField(
+                    "Optional memo for this session",
+                    text: $viewModel.note
+                )
+            }
+
+            Section {
+                Button {
+                    viewModel.anonymize(
+                        context: context,
+                        settingsStore: settingsStore,
+                        manualRules: maskSessionStore.manualRules
+                    )
+                    isHistorySavedMessagePresented = settingsStore.isHistoryAutoSaveEnabled
+                } label: {
+                    Label("Anonymize", systemImage: "wand.and.stars")
+                }
+                .disabled(viewModel.sourceText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+            }
+
+            if let result = viewModel.result {
+                summarySection(
+                    result: result,
+                    session: viewModel.lastSavedSession
+                )
+                maskedOutputSection(result: result)
+            }
         }
         .navigationTitle("Mask")
         .alert("Saved to history", isPresented: $isHistorySavedMessagePresented) {
@@ -100,55 +81,43 @@ struct MaskView: View {
 
 private extension MaskView {
     @ViewBuilder
-    func summaryView(
+    func summarySection(
         result: MaskingResult,
         session: MaskingSession?
     ) -> some View {
-        GroupBox("Latest result") {
-            VStack(alignment: .leading, spacing: 8) {
+        Section("Latest result") {
+            HStack {
+                Text("Processed at")
+                Spacer()
+                Text((session?.createdAt ?? Date()).formatted(date: .abbreviated, time: .shortened))
+                    .foregroundStyle(.secondary)
+            }
+            HStack {
+                Text("Mappings")
+                Spacer()
+                Text("\(result.mappings.count)")
+                    .foregroundStyle(.secondary)
+            }
+            if let note = session?.note?.trimmingCharacters(in: .whitespacesAndNewlines), note.isEmpty == false {
                 HStack {
-                    Text("Processed at")
+                    Text("Memo")
                     Spacer()
-                    Text((session?.createdAt ?? Date()).formatted(date: .abbreviated, time: .shortened))
+                    Text(note)
                         .foregroundStyle(.secondary)
-                }
-                HStack {
-                    Text("Mappings")
-                    Spacer()
-                    Text("\(result.mappings.count)")
-                        .foregroundStyle(.secondary)
-                }
-                if let note = session?.note?.trimmingCharacters(in: .whitespacesAndNewlines), note.isEmpty == false {
-                    HStack {
-                        Text("Memo")
-                        Spacer()
-                        Text(note)
-                            .foregroundStyle(.secondary)
-                    }
                 }
             }
         }
     }
 
     @ViewBuilder
-    func maskedOutputView(
+    func maskedOutputSection(
         result: MaskingResult
     ) -> some View {
-        GroupBox("Masked text") {
-            VStack(alignment: .leading, spacing: 8) {
-                TextEditor(text: .constant(result.maskedText))
-                    .frame(minHeight: 180)
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(.quaternary)
-                    }
-                    .textSelection(.enabled)
-
-                HStack {
-                    Spacer()
-                    CopyButton(text: result.maskedText)
-                }
-            }
+        Section("Masked text") {
+            TextEditor(text: .constant(result.maskedText))
+                .frame(minHeight: 180)
+                .textSelection(.enabled)
+            CopyButton(text: result.maskedText)
         }
     }
 }
