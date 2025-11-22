@@ -151,7 +151,13 @@
     "Status" : {
 
     },
+    "Subscription" : {
+
+    },
     "Trim history to limit" : {
+
+    },
+    "Use iCloud sync" : {
 
     },
     "You can review this session anytime from History." : {

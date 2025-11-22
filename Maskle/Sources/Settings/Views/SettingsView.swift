@@ -14,11 +14,26 @@ struct SettingsView: View {
     private var context
     @Environment(SettingsStore.self)
     private var settingsStore
+    @AppStorage(.isSubscribeOn)
+    private var isSubscribeOn
+    @AppStorage(.isICloudOn)
+    private var isICloudOn
 
     @State private var isDeleteDialogPresented = false
 
     var body: some View {
         List {
+            Section("Subscription") {
+                if isSubscribeOn {
+                    Toggle("Use iCloud sync", isOn: $isICloudOn)
+                } else {
+                    NavigationLink {
+                        StoreNavigationView()
+                    } label: {
+                        Text("Subscription")
+                    }
+                }
+            }
             Section("Masking options") {
                 Toggle("Mask URLs", isOn: binding(\.isURLMaskingEnabled))
                 Toggle("Mask email addresses", isOn: binding(\.isEmailMaskingEnabled))

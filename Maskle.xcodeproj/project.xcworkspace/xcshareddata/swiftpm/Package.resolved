@@ -1,6 +1,15 @@
 {
-  "originHash" : "b65450e0edee054c5e0e7157292044725508e1427244c9a0066e4f280c6539c2",
+  "originHash" : "45981674a8fd26d454ad70b043f4d338581e52efe604411f7e13abd988040486",
   "pins" : [
+    {
+      "identity" : "storekitwrapper",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/muhiro12/StoreKitWrapper",
+      "state" : {
+        "revision" : "c43d9cd7f68eb66d63f6b258af48c9825c1f0d00",
+        "version" : "1.2.0"
+      }
+    },
     {
       "identity" : "swiftutilities",
       "kind" : "remoteSourceControl",

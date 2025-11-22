@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AD0D68CA2ED1AC1100C260B2 /* StoreKitWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = AD0D68C92ED1AC1100C260B2 /* StoreKitWrapper */; };
 		ADF11DA72ED15BC4006B7FE1 /* MaskleLibrary in Frameworks */ = {isa = PBXBuildFile; productRef = ADF11DA62ED15BC4006B7FE1 /* MaskleLibrary */; };
 /* End PBXBuildFile section */
 
@@ -42,6 +43,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				ADF11DA72ED15BC4006B7FE1 /* MaskleLibrary in Frameworks */,
+				AD0D68CA2ED1AC1100C260B2 /* StoreKitWrapper in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,6 +88,7 @@
 			name = Maskle;
 			packageProductDependencies = (
 				ADF11DA62ED15BC4006B7FE1 /* MaskleLibrary */,
+				AD0D68C92ED1AC1100C260B2 /* StoreKitWrapper */,
 			);
 			productName = Maskle;
 			productReference = ADD34ED32ED1566900CB9DE2 /* Maskle.app */;
@@ -117,6 +120,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				ADF11DA52ED15BC4006B7FE1 /* XCLocalSwiftPackageReference "MaskleLibrary" */,
+				AD0D68C82ED1AC1000C260B2 /* XCRemoteSwiftPackageReference "StoreKitWrapper" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = ADD34ED42ED1566900CB9DE2 /* Products */;
@@ -387,7 +391,23 @@
 		};
 /* End XCLocalSwiftPackageReference section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		AD0D68C82ED1AC1000C260B2 /* XCRemoteSwiftPackageReference "StoreKitWrapper" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/muhiro12/StoreKitWrapper";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
+		AD0D68C92ED1AC1100C260B2 /* StoreKitWrapper */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AD0D68C82ED1AC1000C260B2 /* XCRemoteSwiftPackageReference "StoreKitWrapper" */;
+			productName = StoreKitWrapper;
+		};
 		ADF11DA62ED15BC4006B7FE1 /* MaskleLibrary */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = MaskleLibrary;
