@@ -1,0 +1,62 @@
+//
+//  MaskViewModel.swift
+//
+//
+//  Created by Hiromu Nakano on 2025/11/23.
+//
+
+import MaskleLibrary
+import Observation
+import SwiftData
+
+@Observable
+final class MaskViewModel {
+    var sourceText = String()
+    var note = String()
+    var manualRules = [MaskingRule]()
+    var result: MaskingResult?
+    var lastSavedSession: MaskingSession?
+
+    func addRule() {
+        manualRules.append(
+            .init(
+                original: String(),
+                alias: String(),
+                kind: .custom
+            )
+        )
+    }
+
+    func anonymize(
+        context: ModelContext,
+        settingsStore: SettingsStore
+    ) {
+        let options = MaskingOptions(
+            isURLMaskingEnabled: settingsStore.isURLMaskingEnabled,
+            isEmailMaskingEnabled: settingsStore.isEmailMaskingEnabled,
+            isPhoneMaskingEnabled: settingsStore.isPhoneMaskingEnabled
+        )
+        let generated = MaskingService.anonymize(
+            text: sourceText,
+            manualRules: manualRules,
+            options: options
+        )
+        result = generated
+
+        guard settingsStore.isHistoryAutoSaveEnabled else {
+            return
+        }
+
+        do {
+            lastSavedSession = try SessionService.saveSession(
+                context: context,
+                maskedText: generated.maskedText,
+                note: note.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? nil : note,
+                mappings: generated.mappings,
+                historyLimit: settingsStore.historyLimit
+            )
+        } catch {
+            assertionFailure(error.localizedDescription)
+        }
+    }
+}

@@ -12,6 +12,7 @@
 
 /* Begin PBXFileReference section */
 		ADD34ED32ED1566900CB9DE2 /* Maskle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Maskle.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		ADF11DD82ED1689E006B7FE1 /* MaskleLibrary */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = MaskleLibrary; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -50,6 +51,7 @@
 		ADD34ECA2ED1566900CB9DE2 = {
 			isa = PBXGroup;
 			children = (
+				ADF11DD82ED1689E006B7FE1 /* MaskleLibrary */,
 				ADD34ED52ED1566900CB9DE2 /* Maskle */,
 				ADD34ED42ED1566900CB9DE2 /* Products */,
 			);
