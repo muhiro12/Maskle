@@ -28,13 +28,15 @@ extension MaskSessionStore {
     func addRule(
         original: String = .init(),
         alias: String = .init(),
-        kind: MappingKind = .custom
+        kind: MappingKind = .custom,
+        isEnabled: Bool = true
     ) -> UUID {
         manualRules.append(
             .init(
                 original: original,
                 alias: alias,
-                kind: kind
+                kind: kind,
+                isEnabled: isEnabled
             )
         )
         return manualRules.last?.id ?? .init()
@@ -50,7 +52,8 @@ extension MaskSessionStore {
         id: UUID,
         original: String,
         alias: String,
-        kind: MappingKind
+        kind: MappingKind,
+        isEnabled: Bool
     ) {
         guard let index = manualRules.firstIndex(where: { $0.id == id }) else {
             return
@@ -58,6 +61,7 @@ extension MaskSessionStore {
         manualRules[index].original = original
         manualRules[index].alias = alias
         manualRules[index].kind = kind
+        manualRules[index].isEnabled = isEnabled
     }
 
     func rule(id: UUID) -> MaskingRule? {

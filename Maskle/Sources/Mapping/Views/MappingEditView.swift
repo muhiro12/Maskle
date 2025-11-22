@@ -21,6 +21,7 @@ struct MappingEditView: View {
     @State private var original = String()
     @State private var alias = String()
     @State private var kind = MappingKind.custom
+    @State private var isEnabled = true
 
     var body: some View {
         Form {
@@ -36,6 +37,9 @@ struct MappingEditView: View {
                         Text(value.displayName).tag(value)
                     }
                 }
+            }
+            Section("Status") {
+                Toggle("Enabled", isOn: $isEnabled)
             }
             Section {
                 Button(saveTitle) {
@@ -82,6 +86,7 @@ private extension MappingEditView {
         original = rule.original
         alias = rule.alias
         kind = rule.kind
+        isEnabled = rule.isEnabled
     }
 
     func save() {
@@ -95,13 +100,15 @@ private extension MappingEditView {
                 id: ruleID,
                 original: trimmedOriginal,
                 alias: trimmedAlias,
-                kind: kind
+                kind: kind,
+                isEnabled: isEnabled
             )
         } else {
             _ = maskSessionStore.addRule(
                 original: trimmedOriginal,
                 alias: trimmedAlias,
-                kind: kind
+                kind: kind,
+                isEnabled: isEnabled
             )
         }
         isPresented = false

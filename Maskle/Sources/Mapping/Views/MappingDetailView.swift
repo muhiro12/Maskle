@@ -28,6 +28,9 @@ struct MappingDetailView: View {
                 Section("Kind") {
                     Text(rule.kind.displayName)
                 }
+                Section("Status") {
+                    Text(rule.isEnabled ? "Enabled" : "Disabled")
+                }
                 Section("Created at") {
                     Text(rule.createdAt.formatted(date: .abbreviated, time: .shortened))
                 }

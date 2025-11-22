@@ -22,6 +22,11 @@ struct MappingListView: View {
                     VStack(alignment: .leading, spacing: 4) {
                         Text(rule.alias.isEmpty ? "Alias not set" : rule.alias)
                             .font(.headline)
+                        if rule.isEnabled == false {
+                            Text("Disabled")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
                         Text(rule.original.isEmpty ? "Original not set" : rule.original)
                             .font(.subheadline)
                             .foregroundStyle(.secondary)

@@ -21,7 +21,8 @@ public enum MaskingService {
         manualRules
             .filter {
                 !$0.original.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
-                    !$0.alias.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                    !$0.alias.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
+                    $0.isEnabled
             }
             .forEach { rule in
                 let (updatedText, count) = replaceOccurrences(
