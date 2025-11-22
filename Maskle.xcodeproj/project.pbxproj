@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		ADF11DA72ED15BC4006B7FE1 /* MaskleLibrary in Frameworks */ = {isa = PBXBuildFile; productRef = ADF11DA62ED15BC4006B7FE1 /* MaskleLibrary */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		ADD34ED32ED1566900CB9DE2 /* Maskle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Maskle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -36,6 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ADF11DA72ED15BC4006B7FE1 /* MaskleLibrary in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +83,7 @@
 			);
 			name = Maskle;
 			packageProductDependencies = (
+				ADF11DA62ED15BC4006B7FE1 /* MaskleLibrary */,
 			);
 			productName = Maskle;
 			productReference = ADD34ED32ED1566900CB9DE2 /* Maskle.app */;
@@ -107,6 +113,9 @@
 			);
 			mainGroup = ADD34ECA2ED1566900CB9DE2;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				ADF11DA52ED15BC4006B7FE1 /* XCLocalSwiftPackageReference "MaskleLibrary" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = ADD34ED42ED1566900CB9DE2 /* Products */;
 			projectDirPath = "";
@@ -366,6 +375,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		ADF11DA52ED15BC4006B7FE1 /* XCLocalSwiftPackageReference "MaskleLibrary" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = MaskleLibrary;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		ADF11DA62ED15BC4006B7FE1 /* MaskleLibrary */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MaskleLibrary;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = ADD34ECB2ED1566900CB9DE2 /* Project object */;
 }

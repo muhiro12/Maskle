@@ -1,0 +1,15 @@
+{
+  "originHash" : "b65450e0edee054c5e0e7157292044725508e1427244c9a0066e4f280c6539c2",
+  "pins" : [
+    {
+      "identity" : "swiftutilities",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/muhiro12/SwiftUtilities",
+      "state" : {
+        "revision" : "1e7e633caa979d8dafea34701dd48c8aa1b5e0ac",
+        "version" : "1.31.0"
+      }
+    }
+  ],
+  "version" : 3
+}
