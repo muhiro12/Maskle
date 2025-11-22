@@ -14,23 +14,13 @@ import SwiftData
 final class MaskViewModel {
     var sourceText = String()
     var note = String()
-    var manualRules = [MaskingRule]()
     var result: MaskingResult?
     var lastSavedSession: MaskingSession?
 
-    func addRule() {
-        manualRules.append(
-            .init(
-                original: String(),
-                alias: String(),
-                kind: .custom
-            )
-        )
-    }
-
     func anonymize(
         context: ModelContext,
-        settingsStore: SettingsStore
+        settingsStore: SettingsStore,
+        manualRules: [MaskingRule]
     ) {
         let options = MaskingOptions(
             isURLMaskingEnabled: settingsStore.isURLMaskingEnabled,

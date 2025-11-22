@@ -13,9 +13,11 @@ import SwiftUI
 struct MaskleApp: App {
     private var sharedModelContainer: ModelContainer
     private var sharedSettingsStore: SettingsStore
+    private var sharedMaskSessionStore: MaskSessionStore
 
     init() {
         sharedSettingsStore = .init()
+        sharedMaskSessionStore = .init()
         sharedModelContainer = {
             do {
                 return try .init(
@@ -40,6 +42,7 @@ struct MaskleApp: App {
             ContentView()
                 .modelContainer(sharedModelContainer)
                 .environment(sharedSettingsStore)
+                .environment(sharedMaskSessionStore)
         }
     }
 }

@@ -74,7 +74,7 @@ struct SettingsView: View {
                 Text("Cancel")
             }
         }
-        .onChange(of: settingsStore.historyLimit) { _ in
+        .onChange(of: settingsStore.historyLimit) {
             do {
                 try SessionService.trimHistoryIfNeeded(
                     context: context,

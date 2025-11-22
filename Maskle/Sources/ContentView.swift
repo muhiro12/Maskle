@@ -9,6 +9,7 @@ import SwiftUI
 
 private enum SidebarItem: Hashable {
     case mask
+    case mappings
     case history
     case settings
 }
@@ -21,6 +22,9 @@ struct ContentView: View {
             List(selection: $selection) {
                 NavigationLink(value: SidebarItem.mask) {
                     Label("Mask", systemImage: "wand.and.stars")
+                }
+                NavigationLink(value: SidebarItem.mappings) {
+                    Label("Mappings", systemImage: "list.bullet.clipboard")
                 }
                 NavigationLink(value: SidebarItem.history) {
                     Label("History", systemImage: "clock.arrow.circlepath")
@@ -35,6 +39,10 @@ struct ContentView: View {
             case .mask:
                 NavigationStack {
                     MaskView()
+                }
+            case .mappings:
+                NavigationStack {
+                    MappingView()
                 }
             case .history:
                 HistoryNavigationView()

@@ -14,12 +14,15 @@ struct MaskView: View {
     private var context
     @Environment(SettingsStore.self)
     private var settingsStore
+    @Environment(MaskSessionStore.self)
+    private var maskSessionStore
 
     @State private var viewModel = MaskViewModel()
     @State private var isHistorySavedMessagePresented = false
 
     var body: some View {
         ScrollView {
+            @Bindable var maskSessionStore = maskSessionStore
             VStack(alignment: .leading, spacing: 16) {
                 GroupBox("Original text") {
                     TextEditor(text: $viewModel.sourceText)
@@ -37,34 +40,14 @@ struct MaskView: View {
                         }
                 }
 
-                GroupBox("Manual mappings") {
-                    VStack(alignment: .leading, spacing: 12) {
-                        if viewModel.manualRules.isEmpty {
-                            Text("Add optional custom rules for known names, companies, or URLs.")
+                let mappingCount = maskSessionStore.manualRules.count
+                if mappingCount > .zero {
+                    GroupBox("Manual mappings in use") {
+                        HStack {
+                            Text("Mappings")
+                            Spacer()
+                            Text("\(mappingCount)")
                                 .foregroundStyle(.secondary)
-                        }
-
-                        ForEach($viewModel.manualRules) { $rule in
-                            MappingRuleEditor(rule: $rule)
-                                .padding(.vertical, 4)
-                            HStack {
-                                Spacer()
-                                Button(role: .destructive) {
-                                    viewModel.manualRules.removeAll {
-                                        $0.id == rule.id
-                                    }
-                                } label: {
-                                    Label("Remove", systemImage: "trash")
-                                }
-                                .disabled(viewModel.manualRules.count <= 1)
-                            }
-                            Divider()
-                        }
-
-                        Button {
-                            viewModel.addRule()
-                        } label: {
-                            Label("Add mapping", systemImage: "plus.circle")
                         }
                     }
                 }
@@ -82,7 +65,8 @@ struct MaskView: View {
                     Button {
                         viewModel.anonymize(
                             context: context,
-                            settingsStore: settingsStore
+                            settingsStore: settingsStore,
+                            manualRules: maskSessionStore.manualRules
                         )
                         isHistorySavedMessagePresented = settingsStore.isHistoryAutoSaveEnabled
                     } label: {
@@ -110,11 +94,6 @@ struct MaskView: View {
             }
         } message: {
             Text("You can review this session anytime from History.")
-        }
-        .onAppear {
-            if viewModel.manualRules.isEmpty {
-                viewModel.addRule()
-            }
         }
     }
 }
