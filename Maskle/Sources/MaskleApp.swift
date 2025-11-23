@@ -25,6 +25,7 @@ struct MaskleApp: App {
                 return try .init(
                     for: MaskingSession.self,
                     MaskRule.self,
+                    Tag.self,
                     configurations: .init(
                         cloudKitDatabase: isICloudOn ? .automatic : .none
                     )
@@ -34,6 +35,7 @@ struct MaskleApp: App {
                 return try! .init(
                     for: MaskingSession.self,
                     MaskRule.self,
+                    Tag.self,
                     configurations: .init(
                         isStoredInMemoryOnly: true
                     )

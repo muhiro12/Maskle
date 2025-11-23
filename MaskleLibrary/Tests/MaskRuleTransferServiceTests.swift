@@ -9,8 +9,7 @@ final class MaskRuleTransferServiceTests: XCTestCase {
         MaskRule.create(
             context: context,
             original: "Secret",
-            alias: "Alias",
-            kind: .person
+            alias: "Alias"
         )
         try context.save()
 
@@ -29,7 +28,6 @@ final class MaskRuleTransferServiceTests: XCTestCase {
         let fetched = try importContext.fetch(FetchDescriptor<MaskRule>())
         XCTAssertEqual(fetched.count, 1)
         XCTAssertEqual(fetched.first?.alias, "Alias")
-        XCTAssertEqual(fetched.first?.kindID, MappingKind.person.rawValue)
     }
 
     func testMergeUpdatesExistingRule() throws {
@@ -38,8 +36,7 @@ final class MaskRuleTransferServiceTests: XCTestCase {
         MaskRule.create(
             context: context,
             original: "Old",
-            alias: "OldAlias",
-            kind: .project
+            alias: "OldAlias"
         )
         try context.save()
 
@@ -47,8 +44,7 @@ final class MaskRuleTransferServiceTests: XCTestCase {
         MaskRule.create(
             context: payloadContext,
             original: "Old",
-            alias: "NewAlias",
-            kind: .project
+            alias: "NewAlias"
         )
 
         let data = try MaskRuleTransferService.exportData(context: payloadContext)
@@ -72,8 +68,7 @@ final class MaskRuleTransferServiceTests: XCTestCase {
         MaskRule.create(
             context: context,
             original: "Keep",
-            alias: "KeepAlias",
-            kind: .other
+            alias: "KeepAlias"
         )
         try context.save()
 
@@ -81,8 +76,7 @@ final class MaskRuleTransferServiceTests: XCTestCase {
         MaskRule.create(
             context: payloadContext,
             original: "New",
-            alias: "NewAlias",
-            kind: .other
+            alias: "NewAlias"
         )
 
         let data = try MaskRuleTransferService.exportData(context: payloadContext)
@@ -106,6 +100,7 @@ private extension MaskRuleTransferServiceTests {
     func makeContext() throws -> ModelContext {
         let container = try ModelContainer(
             for: MaskRule.self,
+            Tag.self,
             configurations: .init(isStoredInMemoryOnly: true)
         )
         return ModelContext(container)

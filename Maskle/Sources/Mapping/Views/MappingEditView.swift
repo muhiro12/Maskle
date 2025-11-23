@@ -21,7 +21,6 @@ struct MappingEditView: View {
 
     @State private var original = String()
     @State private var alias = String()
-    @State private var kind = MappingKind.custom
     @State private var isEnabled = true
 
     init(
@@ -29,14 +28,12 @@ struct MappingEditView: View {
         isPresented: Binding<Bool>,
         prefilledOriginal: String = String(),
         prefilledAlias: String = String(),
-        prefilledKind: MappingKind = .custom,
         prefilledIsEnabled: Bool = true
     ) {
         self.rule = rule
         _isPresented = isPresented
         _original = .init(initialValue: prefilledOriginal)
         _alias = .init(initialValue: prefilledAlias)
-        _kind = .init(initialValue: prefilledKind)
         _isEnabled = .init(initialValue: prefilledIsEnabled)
     }
 
@@ -47,13 +44,6 @@ struct MappingEditView: View {
             }
             Section("Alias") {
                 TextField("Alias", text: $alias)
-            }
-            Section("Kind") {
-                Picker("Kind", selection: $kind) {
-                    ForEach(MappingKind.allCases) { value in
-                        Text(value.displayName).tag(value)
-                    }
-                }
             }
             Section("Status") {
                 Toggle("Enabled", isOn: $isEnabled)
@@ -101,7 +91,6 @@ private extension MappingEditView {
         }
         original = rule.original
         alias = rule.alias
-        kind = rule.kind ?? .custom
         isEnabled = rule.isEnabled
     }
 
@@ -115,7 +104,6 @@ private extension MappingEditView {
             rule.update(
                 original: trimmedOriginal,
                 alias: trimmedAlias,
-                kind: kind,
                 isEnabled: isEnabled
             )
         } else {
@@ -123,7 +111,6 @@ private extension MappingEditView {
                 context: context,
                 original: trimmedOriginal,
                 alias: trimmedAlias,
-                kind: kind,
                 isEnabled: isEnabled
             )
         }

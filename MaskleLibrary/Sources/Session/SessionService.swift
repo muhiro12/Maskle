@@ -13,13 +13,11 @@ public enum SessionService {
     public static func saveSession(
         context: ModelContext,
         maskedText: String,
-        note: String?,
         mappings _: [Mapping]
     ) throws -> MaskingSession {
         let session = MaskingSession.create(
             context: context,
-            maskedText: maskedText,
-            note: note
+            maskedText: maskedText
         )
 
         try context.save()
@@ -32,12 +30,10 @@ public enum SessionService {
         context: ModelContext,
         session: MaskingSession,
         maskedText: String,
-        note: String?,
         mappings _: [Mapping]
     ) throws -> MaskingSession {
         session.update(
-            maskedText: maskedText,
-            note: note
+            maskedText: maskedText
         )
 
         try context.save()

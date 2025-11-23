@@ -51,13 +51,9 @@ struct MappingListView: View {
                         Text(rule.original.isEmpty ? "Original not set" : rule.original)
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
-                        HStack {
-                            Text(rule.kind?.displayName ?? "Unknown")
-                            Spacer()
-                            Text(rule.date.formatted(date: .abbreviated, time: .shortened))
-                        }
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                        Text(rule.date.formatted(date: .abbreviated, time: .shortened))
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
                     }
                 }
             }

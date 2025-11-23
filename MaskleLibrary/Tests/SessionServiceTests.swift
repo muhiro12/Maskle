@@ -15,7 +15,6 @@ final class SessionServiceTests: XCTestCase {
         let first = try SessionService.saveSession(
             context: context,
             maskedText: "masked-1",
-            note: "first",
             mappings: [mapping]
         )
         XCTAssertEqual(first.mappings?.count, 1)

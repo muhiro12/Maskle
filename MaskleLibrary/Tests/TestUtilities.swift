@@ -5,6 +5,8 @@ var testContext: ModelContext {
     .init(
         try! .init(
             for: MaskingSession.self,
+            MaskRule.self,
+            Tag.self,
             configurations: .init(
                 isStoredInMemoryOnly: true
             )

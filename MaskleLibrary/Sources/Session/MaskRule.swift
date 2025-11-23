@@ -14,8 +14,10 @@ public final class MaskRule {
     public private(set) var date = Date()
     public private(set) var original = String()
     public private(set) var alias = String()
-    public private(set) var kindID = MappingKind.custom.rawValue
     public private(set) var isEnabled = true
+
+    @Relationship(deleteRule: .nullify)
+    public private(set) var tags: [Tag]?
 
     private init() {}
 
@@ -25,7 +27,6 @@ public final class MaskRule {
         date: Date = Date(),
         original: String,
         alias: String,
-        kind: MappingKind = .custom,
         isEnabled: Bool = true
     ) -> MaskRule {
         let rule = MaskRule()
@@ -34,7 +35,6 @@ public final class MaskRule {
         rule.date = date
         rule.original = original
         rule.alias = alias
-        rule.kindID = kind.rawValue
         rule.isEnabled = isEnabled
 
         return rule
@@ -44,7 +44,6 @@ public final class MaskRule {
         date: Date? = nil,
         original: String,
         alias: String,
-        kind: MappingKind,
         isEnabled: Bool
     ) {
         if let date {
@@ -52,23 +51,18 @@ public final class MaskRule {
         }
         self.original = original
         self.alias = alias
-        kindID = kind.rawValue
         self.isEnabled = isEnabled
     }
 }
 
 public extension MaskRule {
-    var kind: MappingKind? {
-        MappingKind(rawValue: kindID)
-    }
-
     var maskingRule: MaskingRule {
         let identifier = persistentModelID.base64String
         return .init(
             id: identifier,
             original: original,
             alias: alias,
-            kind: kind ?? .custom,
+            kind: .custom,
             date: date,
             isEnabled: isEnabled
         )

@@ -13,7 +13,9 @@ import SwiftData
 public final class MaskingSession {
     public private(set) var date = Date()
     public private(set) var maskedText = String()
-    public private(set) var note: String?
+
+    @Relationship(deleteRule: .nullify)
+    public private(set) var tags: [Tag]?
 
     private init() {}
 
@@ -21,25 +23,21 @@ public final class MaskingSession {
     public static func create(
         context: ModelContext,
         maskedText: String,
-        note: String?
-    ) -> MaskingSession {
+        ) -> MaskingSession {
         let session = MaskingSession()
         context.insert(session)
 
         session.date = Date()
         session.maskedText = maskedText
-        session.note = note
 
         return session
     }
 
     public func update(
-        maskedText: String,
-        note: String?
+        maskedText: String
     ) {
         date = Date()
         self.maskedText = maskedText
-        self.note = note
     }
 }
 

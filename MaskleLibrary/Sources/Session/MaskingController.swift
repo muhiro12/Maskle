@@ -19,7 +19,6 @@ public final class MaskingController {
     private var lastSavedMaskedTextCache: String?
 
     public var sourceText = String()
-    public var note = String()
     public var result: MaskingResult?
     public var lastSavedSession: MaskingSession?
 
@@ -77,7 +76,6 @@ public final class MaskingController {
         save(
             context: context,
             maskedText: generated.maskedText,
-            note: note,
             mappings: generated.mappings
         )
     }
@@ -99,7 +97,6 @@ public final class MaskingController {
 
         let maskedText = currentResult.maskedText
         let mappings = currentResult.mappings
-        let noteText = note.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? nil : note
 
         autoSaveTask = Task { @MainActor [weak self] in
             guard let self else {
@@ -107,7 +104,6 @@ public final class MaskingController {
             }
 
             let delay = autoSaveDelayNanoseconds
-            let noteText = noteText
 
             do {
                 try await Task.sleep(nanoseconds: delay)
@@ -129,14 +125,12 @@ public final class MaskingController {
                         context: context,
                         session: session,
                         maskedText: maskedText,
-                        note: noteText,
                         mappings: mappings
                     )
                 } else {
                     save(
                         context: context,
                         maskedText: maskedText,
-                        note: noteText,
                         mappings: mappings
                     )
                 }
@@ -146,7 +140,6 @@ public final class MaskingController {
             save(
                 context: context,
                 maskedText: maskedText,
-                note: noteText,
                 mappings: mappings
             )
         }
@@ -157,14 +150,12 @@ private extension MaskingController {
     func save(
         context: ModelContext,
         maskedText: String,
-        note: String?,
         mappings: [Mapping]
     ) {
         do {
             lastSavedSession = try SessionService.saveSession(
                 context: context,
                 maskedText: maskedText,
-                note: note?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == true ? nil : note,
                 mappings: mappings
             )
             lastSavedMaskedTextCache = maskedText
@@ -177,7 +168,6 @@ private extension MaskingController {
         context: ModelContext,
         session: MaskingSession,
         maskedText: String,
-        note: String?,
         mappings: [Mapping]
     ) {
         do {
@@ -185,7 +175,6 @@ private extension MaskingController {
                 context: context,
                 session: session,
                 maskedText: maskedText,
-                note: note,
                 mappings: mappings
             )
             lastSavedMaskedTextCache = maskedText

@@ -25,7 +25,6 @@ public enum MaskRuleTransferService {
         let date: Date
         let original: String
         let alias: String
-        let kindID: String
         let isEnabled: Bool
     }
 
@@ -62,7 +61,6 @@ public extension MaskRuleTransferService {
                 date: rule.date,
                 original: rule.original,
                 alias: rule.alias,
-                kindID: rule.kindID,
                 isEnabled: rule.isEnabled
             )
         }
@@ -118,8 +116,7 @@ public extension MaskRuleTransferService {
             transfer.rules.forEach { payload in
                 if let match = existing.first(where: {
                     $0.original == payload.original &&
-                        $0.alias == payload.alias &&
-                        $0.kindID == payload.kindID
+                        $0.alias == payload.alias
                 }) {
                     apply(
                         payload: payload,
@@ -169,7 +166,6 @@ private extension MaskRuleTransferService {
             date: payload.date,
             original: payload.original,
             alias: payload.alias,
-            kind: MappingKind(rawValue: payload.kindID) ?? .custom,
             isEnabled: payload.isEnabled
         )
     }
@@ -182,7 +178,6 @@ private extension MaskRuleTransferService {
             date: payload.date,
             original: payload.original,
             alias: payload.alias,
-            kind: MappingKind(rawValue: payload.kindID) ?? .custom,
             isEnabled: payload.isEnabled
         )
     }

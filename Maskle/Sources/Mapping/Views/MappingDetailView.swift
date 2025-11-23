@@ -22,7 +22,7 @@ struct MappingDetailView: View {
                 Text(rule.original.isEmpty ? "Not set" : rule.original)
             }
             Section("Kind") {
-                Text(rule.kind?.displayName ?? "Unknown")
+                Text("Tags are not set")
             }
             Section("Status") {
                 Text(rule.isEnabled ? "Enabled" : "Disabled")
