@@ -19,6 +19,9 @@ struct MaskView: View {
 
     @State private var controller = MaskingController()
     @State private var disabledRuleIDs = Set<UUID>()
+    @State private var sourceSelection: TextSelection?
+    @State private var isPresentingMappingCreation = false
+    @State private var pendingOriginalForMapping = String()
 
     init() {
         _manualRules = Query(
@@ -35,50 +38,7 @@ struct MaskView: View {
 
         GeometryReader { proxy in
             ScrollView {
-                VStack(spacing: 16) {
-                    SectionContainer(title: "Original text") {
-                        TextEditor(text: $controller.sourceText)
-                            .frame(
-                                minHeight: 180,
-                                maxHeight: max(220, proxy.size.height * 0.6)
-                            )
-                    }
-
-                    if let result = controller.result {
-                        SectionContainer(title: "Masked text") {
-                            TextEditor(text: .constant(result.maskedText))
-                                .frame(
-                                    minHeight: 180,
-                                    maxHeight: max(220, proxy.size.height * 0.6)
-                                )
-                                .textSelection(.enabled)
-                            CopyButton(text: result.maskedText)
-                        }
-                    } else {
-                        SectionContainer(title: "Masked text") {
-                            Text("Enter text above to see masked output.")
-                                .foregroundStyle(.secondary)
-                        }
-                    }
-
-                    if controller.result != nil {
-                        SectionContainer {
-                            Button {
-                                controller.anonymize(
-                                    context: context,
-                                    options: maskingOptions(),
-                                    manualRules: activeManualRules(),
-                                    shouldSaveHistory: true,
-                                    isHistoryAutoSaveEnabled: settingsStore.isHistoryAutoSaveEnabled
-                                )
-                            } label: {
-                                Label("Save to history", systemImage: "tray.and.arrow.down")
-                            }
-                        }
-                    }
-                }
-                .padding(.horizontal)
-                .padding(.vertical, 8)
+                content(proxy: proxy, controller: controller)
             }
         }
         .navigationTitle("Mask")
@@ -121,6 +81,15 @@ struct MaskView: View {
         }
         .task {
             controller.loadLatestSavedSession(context: context)
+        }
+        .sheet(isPresented: $isPresentingMappingCreation) {
+            NavigationStack {
+                MappingEditView(
+                    rule: nil,
+                    isPresented: $isPresentingMappingCreation,
+                    prefilledOriginal: pendingOriginalForMapping
+                )
+            }
         }
     }
 }
@@ -166,6 +135,108 @@ private extension MaskView {
             .map(\.maskingRule)
     }
 
+    var selectedSourceText: String? {
+        guard let selection = sourceSelection else {
+            return nil
+        }
+        let rangeSet: RangeSet<String.Index>
+        switch selection.indices {
+        case let .selection(range):
+            rangeSet = .init(range)
+        case let .multiSelection(set):
+            rangeSet = set
+        @unknown default:
+            return nil
+        }
+        guard let range = rangeSet.ranges.first else {
+            return nil
+        }
+        let trimmed = String(controller.sourceText[range])
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        return trimmed.isEmpty ? nil : String(trimmed)
+    }
+
+    @ViewBuilder
+    func content(
+        proxy: GeometryProxy,
+        controller: MaskingController
+    ) -> some View {
+        VStack(spacing: 16) {
+            originalSection(proxy: proxy, controller: controller)
+            maskedSection(proxy: proxy, controller: controller)
+            historySection(controller: controller)
+        }
+        .padding(.horizontal)
+        .padding(.vertical, 8)
+    }
+
+    @ViewBuilder
+    func originalSection(
+        proxy: GeometryProxy,
+        controller _: MaskingController
+    ) -> some View {
+        SectionContainer(title: "Original text") {
+            TextEditor(
+                text: $controller.sourceText,
+                selection: $sourceSelection
+            )
+            .frame(
+                minHeight: 180,
+                maxHeight: max(220, proxy.size.height * 0.6)
+            )
+            Button {
+                presentMappingFromSelection()
+            } label: {
+                Label("Create mapping from selection", systemImage: "plus")
+            }
+            .disabled(selectedSourceText == nil)
+        }
+    }
+
+    @ViewBuilder
+    func maskedSection(
+        proxy: GeometryProxy,
+        controller: MaskingController
+    ) -> some View {
+        if let result = controller.result {
+            SectionContainer(title: "Masked text") {
+                TextEditor(text: .constant(result.maskedText))
+                    .frame(
+                        minHeight: 180,
+                        maxHeight: max(220, proxy.size.height * 0.6)
+                    )
+                    .textSelection(.enabled)
+                CopyButton(text: result.maskedText)
+            }
+        } else {
+            SectionContainer(title: "Masked text") {
+                Text("Enter text above to see masked output.")
+                    .foregroundStyle(.secondary)
+            }
+        }
+    }
+
+    @ViewBuilder
+    func historySection(
+        controller: MaskingController
+    ) -> some View {
+        if controller.result != nil {
+            SectionContainer {
+                Button {
+                    controller.anonymize(
+                        context: context,
+                        options: maskingOptions(),
+                        manualRules: activeManualRules(),
+                        shouldSaveHistory: true,
+                        isHistoryAutoSaveEnabled: settingsStore.isHistoryAutoSaveEnabled
+                    )
+                } label: {
+                    Label("Save to history", systemImage: "tray.and.arrow.down")
+                }
+            }
+        }
+    }
+
     func anonymizeLive() {
         guard controller.sourceText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false else {
             controller.result = nil
@@ -182,6 +253,14 @@ private extension MaskView {
             context: context,
             isHistoryAutoSaveEnabled: settingsStore.isHistoryAutoSaveEnabled
         )
+    }
+
+    func presentMappingFromSelection() {
+        guard let selectedSourceText else {
+            return
+        }
+        pendingOriginalForMapping = selectedSourceText
+        isPresentingMappingCreation = true
     }
 
     func toggleDisabled(rule: ManualRule) {

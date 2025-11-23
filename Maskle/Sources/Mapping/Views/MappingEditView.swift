@@ -24,6 +24,22 @@ struct MappingEditView: View {
     @State private var kind = MappingKind.custom
     @State private var isEnabled = true
 
+    init(
+        rule: ManualRule?,
+        isPresented: Binding<Bool>,
+        prefilledOriginal: String = String(),
+        prefilledAlias: String = String(),
+        prefilledKind: MappingKind = .custom,
+        prefilledIsEnabled: Bool = true
+    ) {
+        self.rule = rule
+        _isPresented = isPresented
+        _original = .init(initialValue: prefilledOriginal)
+        _alias = .init(initialValue: prefilledAlias)
+        _kind = .init(initialValue: prefilledKind)
+        _isEnabled = .init(initialValue: prefilledIsEnabled)
+    }
+
     var body: some View {
         Form {
             Section("Original") {
