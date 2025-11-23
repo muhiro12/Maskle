@@ -15,9 +15,6 @@ public final class MaskingSession {
     public private(set) var maskedText = String()
     public private(set) var note: String?
 
-    @Relationship(deleteRule: .cascade)
-    public private(set) var mappings: [MappingRecord]?
-
     private init() {}
 
     @discardableResult
@@ -44,19 +41,9 @@ public final class MaskingSession {
         self.maskedText = maskedText
         self.note = note
     }
-
-    public func replaceMappings(
-        with records: [MappingRecord]
-    ) {
-        mappings = records
-    }
 }
 
 public extension MaskingSession {
-    var mappingCount: Int {
-        mappings?.count ?? .zero
-    }
-
     var previewText: String {
         if maskedText.count > 80 {
             return "\(maskedText.prefix(80))…"

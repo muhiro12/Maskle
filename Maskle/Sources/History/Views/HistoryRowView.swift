@@ -17,9 +17,6 @@ struct HistoryRowView: View {
                 Text(session.date.formatted(date: .abbreviated, time: .shortened))
                     .font(.headline)
                 Spacer()
-                Label("\(session.mappingCount)", systemImage: "arrow.2.squarepath")
-                    .labelStyle(.titleAndIcon)
-                    .foregroundStyle(.secondary)
             }
             Text(session.previewText)
                 .font(.subheadline)

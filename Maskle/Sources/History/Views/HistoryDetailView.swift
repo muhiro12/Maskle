@@ -20,24 +20,8 @@ struct HistoryDetailView: View {
             }
 
             Section("Mappings") {
-                if let mappings = session.mappings, mappings.isEmpty == false {
-                    ForEach(mappings) { mapping in
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text("Original: \(mapping.original)")
-                            Text("Alias: \(mapping.alias)")
-                            HStack {
-                                Text("Kind: \(mapping.kind?.displayName ?? "Unknown")")
-                                Spacer()
-                                Text("Count: \(mapping.occurrenceCount)")
-                            }
-                            .foregroundStyle(.secondary)
-                        }
-                        .padding(.vertical, 4)
-                    }
-                } else {
-                    Text("No mappings recorded.")
-                        .foregroundStyle(.secondary)
-                }
+                Text("Mappings are not retained in history.")
+                    .foregroundStyle(.secondary)
             }
 
             Section {

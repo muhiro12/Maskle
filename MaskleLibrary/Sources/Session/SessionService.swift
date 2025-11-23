@@ -14,21 +14,12 @@ public enum SessionService {
         context: ModelContext,
         maskedText: String,
         note: String?,
-        mappings: [Mapping]
+        mappings _: [Mapping]
     ) throws -> MaskingSession {
         let session = MaskingSession.create(
             context: context,
             maskedText: maskedText,
             note: note
-        )
-        session.replaceMappings(
-            with: mappings.map {
-                MappingRecord.create(
-                    context: context,
-                    session: session,
-                    mapping: $0
-                )
-            }
         )
 
         try context.save()
@@ -42,22 +33,11 @@ public enum SessionService {
         session: MaskingSession,
         maskedText: String,
         note: String?,
-        mappings: [Mapping]
+        mappings _: [Mapping]
     ) throws -> MaskingSession {
         session.update(
             maskedText: maskedText,
             note: note
-        )
-
-        session.mappings?.forEach(context.delete)
-        session.replaceMappings(
-            with: mappings.map {
-                MappingRecord.create(
-                    context: context,
-                    session: session,
-                    mapping: $0
-                )
-            }
         )
 
         try context.save()
@@ -80,7 +60,4 @@ public enum SessionService {
         context.delete(session)
         try context.save()
     }
-}
-
-private extension MappingRecord {
 }

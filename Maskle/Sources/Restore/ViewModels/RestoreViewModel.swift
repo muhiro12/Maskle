@@ -14,23 +14,11 @@ final class RestoreViewModel {
     var restoredText = String()
 
     func restore(
-        with session: MaskingSession
+        with _: MaskingSession
     ) {
-        let mappings: [Mapping] = session.mappings?.compactMap { record in
-            guard let kind = record.kind else {
-                return nil
-            }
-            return Mapping(
-                original: record.original,
-                alias: record.alias,
-                kind: kind,
-                occurrenceCount: record.occurrenceCount
-            )
-        } ?? []
-
         restoredText = RestoreService.restore(
             text: sourceText,
-            mappings: mappings
+            mappings: []
         )
     }
 }

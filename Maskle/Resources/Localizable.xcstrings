@@ -1,9 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "%lld" : {
-
-    },
     "Add" : {
 
     },
@@ -13,9 +10,6 @@
     "Alias" : {
 
     },
-    "Alias: %@" : {
-
-    },
     "Append new" : {
 
     },
@@ -23,9 +17,6 @@
 
     },
     "Cancel" : {
-
-    },
-    "Count: %lld" : {
 
     },
     "Create mapping from selection" : {
@@ -76,13 +67,13 @@
     "Kind" : {
 
     },
-    "Kind: %@" : {
-
-    },
     "Mapping Detail" : {
 
     },
     "Mappings" : {
+
+    },
+    "Mappings are not retained in history." : {
 
     },
     "Mask" : {
@@ -112,9 +103,6 @@
     "No manual mappings" : {
 
     },
-    "No mappings recorded." : {
-
-    },
     "OK" : {
 
     },
@@ -122,9 +110,6 @@
 
     },
     "Original text" : {
-
-    },
-    "Original: %@" : {
 
     },
     "Replace all" : {
