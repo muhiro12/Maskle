@@ -15,8 +15,8 @@ struct MappingDetailView: View {
 
     var body: some View {
         List {
-            Section("Alias") {
-                Text(rule.alias.isEmpty ? "Not set" : rule.alias)
+            Section("Masked") {
+                Text(rule.masked.isEmpty ? "Not set" : rule.masked)
             }
             Section("Original") {
                 Text(rule.original.isEmpty ? "Not set" : rule.original)

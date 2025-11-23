@@ -12,7 +12,7 @@ final class MaskingServiceTests: XCTestCase {
         let maskRules = [
             MaskingRule(
                 original: "A株式会社",
-                alias: "Client A",
+                masked: "Client A",
                 kind: .company
             )
         ]
@@ -38,25 +38,25 @@ final class MaskingServiceTests: XCTestCase {
         let company = result.mappings.first {
             $0.kind == .company
         }
-        XCTAssertEqual(company?.alias, "Client A")
+        XCTAssertEqual(company?.masked, "Client A")
         XCTAssertEqual(company?.occurrenceCount, 1)
 
         let email = result.mappings.first {
             $0.kind == .email
         }
-        XCTAssertEqual(email?.alias, "Email(1)")
+        XCTAssertEqual(email?.masked, "Email(1)")
         XCTAssertEqual(email?.occurrenceCount, 1)
 
         let phone = result.mappings.first {
             $0.kind == .phone
         }
-        XCTAssertEqual(phone?.alias, "Phone(1)")
+        XCTAssertEqual(phone?.masked, "Phone(1)")
         XCTAssertEqual(phone?.occurrenceCount, 1)
 
         let url = result.mappings.first {
             $0.kind == .url
         }
-        XCTAssertEqual(url?.alias, "PrivateURL(1)")
+        XCTAssertEqual(url?.masked, "PrivateURL(1)")
         XCTAssertEqual(url?.occurrenceCount, 1)
     }
 }

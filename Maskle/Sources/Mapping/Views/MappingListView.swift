@@ -41,7 +41,7 @@ struct MappingListView: View {
             ForEach(rules) { rule in
                 NavigationLink(value: rule) {
                     VStack(alignment: .leading, spacing: 4) {
-                        Text(rule.alias.isEmpty ? "Alias not set" : rule.alias)
+                        Text(rule.masked.isEmpty ? "Masked not set" : rule.masked)
                             .font(.headline)
                         if rule.isEnabled == false {
                             Text("Disabled")

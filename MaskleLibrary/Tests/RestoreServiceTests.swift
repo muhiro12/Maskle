@@ -6,25 +6,25 @@ final class RestoreServiceTests: XCTestCase {
         let mappings = [
             Mapping(
                 original: "A株式会社",
-                alias: "Client A",
+                masked: "Client A",
                 kind: .company,
                 occurrenceCount: 1
             ),
             Mapping(
                 original: "john@example.com",
-                alias: "Email(1)",
+                masked: "Email(1)",
                 kind: .email,
                 occurrenceCount: 1
             ),
             Mapping(
                 original: "+1-555-1234",
-                alias: "Phone(1)",
+                masked: "Phone(1)",
                 kind: .phone,
                 occurrenceCount: 1
             ),
             Mapping(
                 original: "https://internal.example.com/path",
-                alias: "PrivateURL(1)",
+                masked: "PrivateURL(1)",
                 kind: .url,
                 occurrenceCount: 1
             )

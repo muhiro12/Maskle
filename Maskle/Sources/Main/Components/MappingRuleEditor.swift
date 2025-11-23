@@ -21,8 +21,8 @@ struct MappingRuleEditor: View {
             .textFieldStyle(.roundedBorder)
 
             TextField(
-                "Alias",
-                text: $rule.alias,
+                "Masked text",
+                text: $rule.masked,
                 axis: .vertical
             )
             .textFieldStyle(.roundedBorder)

@@ -13,13 +13,13 @@ public enum RestoreService {
         mappings: [Mapping]
     ) -> String {
         let orderedMappings = mappings.sorted {
-            $0.alias.count > $1.alias.count
+            $0.masked.count > $1.masked.count
         }
 
         return orderedMappings.reduce(into: text) { restored, mapping in
             let (updated, _) = replaceOccurrences(
                 in: restored,
-                target: mapping.alias,
+                target: mapping.masked,
                 replacement: mapping.original
             )
             restored = updated

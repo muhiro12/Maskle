@@ -21,14 +21,14 @@ public enum MaskingService {
         maskRules
             .filter {
                 !$0.original.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
-                    !$0.alias.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
+                    !$0.masked.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
                     $0.isEnabled
             }
             .forEach { rule in
                 let (updatedText, count) = replaceOccurrences(
                     in: workingText,
                     target: rule.original,
-                    replacement: rule.alias
+                    replacement: rule.masked
                 )
                 guard count > .zero else {
                     return
@@ -36,7 +36,7 @@ public enum MaskingService {
                 workingText = updatedText
                 let mapping = Mapping(
                     original: rule.original,
-                    alias: rule.alias,
+                    masked: rule.masked,
                     kind: rule.kind,
                     occurrenceCount: count
                 )
@@ -110,17 +110,17 @@ private extension MaskingService {
         let uniqueMatches = unique(strings: matches)
 
         uniqueMatches.forEach { original in
-            guard mappings.contains(where: { $0.original == original || $0.alias == original }) == false else {
+            guard mappings.contains(where: { $0.original == original || $0.masked == original }) == false else {
                 return
             }
 
             let existing = generatedMappings[original]
-            let alias = existing?.alias ?? "\(kind.aliasPrefix)(\(counters[kind, default: .zero] + 1))"
+            let masked = existing?.masked ?? "\(kind.aliasPrefix)(\(counters[kind, default: .zero] + 1))"
 
             let (updatedText, count) = replaceOccurrences(
                 in: workingText,
                 target: original,
-                replacement: alias
+                replacement: masked
             )
 
             guard count > .zero else {
@@ -135,7 +135,7 @@ private extension MaskingService {
             let mapping = Mapping(
                 id: existing?.id ?? UUID(),
                 original: existing?.original ?? original,
-                alias: alias,
+                masked: masked,
                 kind: kind,
                 occurrenceCount: (existing?.occurrenceCount ?? .zero) + count
             )

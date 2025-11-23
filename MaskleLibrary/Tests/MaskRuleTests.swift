@@ -8,43 +8,43 @@ final class MaskRuleTests: XCTestCase {
         _ = try MaskRule.create(
             context: context,
             original: "Apple",
-            alias: "A社"
+            masked: "A社"
         )
 
         XCTAssertThrowsError(
             try MaskRule.create(
                 context: context,
                 original: "Apple",
-                alias: "B社"
+                masked: "B社"
             )
         ) { error in
             XCTAssertEqual(error as? MaskRuleError, .duplicateOriginal)
         }
     }
 
-    func testUpdateRejectsDuplicateAlias() throws {
+    func testUpdateRejectsDuplicateMasked() throws {
         let context = testContext
 
         _ = try MaskRule.create(
             context: context,
             original: "Apple",
-            alias: "A社"
+            masked: "A社"
         )
         let ruleToUpdate = try MaskRule.create(
             context: context,
             original: "Orange",
-            alias: "C社"
+            masked: "C社"
         )
 
         XCTAssertThrowsError(
             try ruleToUpdate.update(
                 context: context,
                 original: "Orange",
-                alias: "A社",
+                masked: "A社",
                 isEnabled: true
             )
         ) { error in
-            XCTAssertEqual(error as? MaskRuleError, .duplicateAlias)
+            XCTAssertEqual(error as? MaskRuleError, .duplicateMasked)
         }
     }
 }

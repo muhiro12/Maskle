@@ -10,20 +10,20 @@ import Foundation
 public struct Mapping: Identifiable, Equatable {
     public let id: UUID
     public let original: String
-    public let alias: String
+    public let masked: String
     public let kind: MappingKind
     public let occurrenceCount: Int
 
     public init(
         id: UUID = .init(),
         original: String,
-        alias: String,
+        masked: String,
         kind: MappingKind,
         occurrenceCount: Int
     ) {
         self.id = id
         self.original = original
-        self.alias = alias
+        self.masked = masked
         self.kind = kind
         self.occurrenceCount = occurrenceCount
     }

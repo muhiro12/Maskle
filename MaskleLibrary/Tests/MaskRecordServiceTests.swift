@@ -7,7 +7,7 @@ final class MaskRecordServiceTests: XCTestCase {
         let context = testContext
         let mapping = Mapping(
             original: "secret",
-            alias: "Alias(1)",
+            masked: "Alias(1)",
             kind: .other,
             occurrenceCount: 2
         )

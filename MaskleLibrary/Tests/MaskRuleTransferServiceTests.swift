@@ -9,7 +9,7 @@ final class MaskRuleTransferServiceTests: XCTestCase {
         try MaskRule.create(
             context: context,
             original: "Secret",
-            alias: "Alias"
+            masked: "Alias"
         )
         try context.save()
 
@@ -27,7 +27,7 @@ final class MaskRuleTransferServiceTests: XCTestCase {
 
         let fetched = try importContext.fetch(FetchDescriptor<MaskRule>())
         XCTAssertEqual(fetched.count, 1)
-        XCTAssertEqual(fetched.first?.alias, "Alias")
+        XCTAssertEqual(fetched.first?.masked, "Alias")
     }
 
     func testMergeUpdatesExistingRule() throws {
@@ -36,7 +36,7 @@ final class MaskRuleTransferServiceTests: XCTestCase {
         try MaskRule.create(
             context: context,
             original: "Old",
-            alias: "OldAlias"
+            masked: "OldAlias"
         )
         try context.save()
 
@@ -44,7 +44,7 @@ final class MaskRuleTransferServiceTests: XCTestCase {
         try MaskRule.create(
             context: payloadContext,
             original: "Old",
-            alias: "NewAlias"
+            masked: "NewAlias"
         )
 
         let data = try MaskRuleTransferService.exportData(context: payloadContext)
@@ -59,7 +59,7 @@ final class MaskRuleTransferServiceTests: XCTestCase {
         XCTAssertEqual(result.updatedCount, 1)
 
         let fetched = try context.fetch(FetchDescriptor<MaskRule>())
-        XCTAssertEqual(fetched.first?.alias, "NewAlias")
+        XCTAssertEqual(fetched.first?.masked, "NewAlias")
     }
 
     func testAppendCreatesNewIDsWhenDuplicated() throws {
@@ -68,7 +68,7 @@ final class MaskRuleTransferServiceTests: XCTestCase {
         try MaskRule.create(
             context: context,
             original: "Keep",
-            alias: "KeepAlias"
+            masked: "KeepAlias"
         )
         try context.save()
 
@@ -76,7 +76,7 @@ final class MaskRuleTransferServiceTests: XCTestCase {
         try MaskRule.create(
             context: payloadContext,
             original: "New",
-            alias: "NewAlias"
+            masked: "NewAlias"
         )
 
         let data = try MaskRuleTransferService.exportData(context: payloadContext)
@@ -92,7 +92,7 @@ final class MaskRuleTransferServiceTests: XCTestCase {
 
         let fetched = try context.fetch(FetchDescriptor<MaskRule>())
         XCTAssertEqual(fetched.count, 2)
-        XCTAssertTrue(fetched.contains { $0.original == "New" && $0.alias == "NewAlias" })
+        XCTAssertTrue(fetched.contains { $0.original == "New" && $0.masked == "NewAlias" })
     }
 }
 

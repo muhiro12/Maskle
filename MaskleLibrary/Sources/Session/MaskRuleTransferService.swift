@@ -24,7 +24,7 @@ public enum MaskRuleTransferService {
     private struct Payload: Codable {
         let date: Date
         let original: String
-        let alias: String
+        let masked: String
         let isEnabled: Bool
     }
 
@@ -60,7 +60,7 @@ public extension MaskRuleTransferService {
             Payload(
                 date: rule.date,
                 original: rule.original,
-                alias: rule.alias,
+                masked: rule.masked,
                 isEnabled: rule.isEnabled
             )
         }
@@ -116,7 +116,7 @@ public extension MaskRuleTransferService {
             for payload in transfer.rules {
                 if let match = existing.first(where: {
                     $0.original == payload.original ||
-                        $0.alias == payload.alias
+                        $0.masked == payload.masked
                 }) {
                     try apply(
                         payload: payload,
@@ -166,7 +166,7 @@ private extension MaskRuleTransferService {
             context: context,
             date: payload.date,
             original: payload.original,
-            alias: payload.alias,
+            masked: payload.masked,
             isEnabled: payload.isEnabled
         )
     }
@@ -180,7 +180,7 @@ private extension MaskRuleTransferService {
             context: context,
             date: payload.date,
             original: payload.original,
-            alias: payload.alias,
+            masked: payload.masked,
             isEnabled: payload.isEnabled
         )
     }

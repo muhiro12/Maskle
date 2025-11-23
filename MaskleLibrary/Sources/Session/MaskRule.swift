@@ -10,14 +10,14 @@ import SwiftData
 
 public enum MaskRuleError: LocalizedError {
     case duplicateOriginal
-    case duplicateAlias
+    case duplicateMasked
 
     public var errorDescription: String? {
         switch self {
         case .duplicateOriginal:
             "The original text is already registered."
-        case .duplicateAlias:
-            "The alias is already registered."
+        case .duplicateMasked:
+            "The masked text is already registered."
         }
     }
 }
@@ -27,7 +27,7 @@ public enum MaskRuleError: LocalizedError {
 public final class MaskRule {
     public private(set) var date = Date()
     public private(set) var original = String()
-    public private(set) var alias = String()
+    public private(set) var masked = String()
     public private(set) var isEnabled = true
 
     @Relationship(deleteRule: .nullify)
@@ -40,13 +40,13 @@ public final class MaskRule {
         context: ModelContext,
         date: Date = Date(),
         original: String,
-        alias: String,
+        masked: String,
         isEnabled: Bool = true
     ) throws -> MaskRule {
         try validateUniqueness(
             context: context,
             original: original,
-            alias: alias,
+            masked: masked,
             excluding: nil
         )
 
@@ -55,7 +55,7 @@ public final class MaskRule {
 
         rule.date = date
         rule.original = original
-        rule.alias = alias
+        rule.masked = masked
         rule.isEnabled = isEnabled
 
         return rule
@@ -65,13 +65,13 @@ public final class MaskRule {
         context: ModelContext,
         date: Date? = nil,
         original: String,
-        alias: String,
+        masked: String,
         isEnabled: Bool
     ) throws {
         try Self.validateUniqueness(
             context: context,
             original: original,
-            alias: alias,
+            masked: masked,
             excluding: self
         )
 
@@ -79,7 +79,7 @@ public final class MaskRule {
             self.date = date
         }
         self.original = original
-        self.alias = alias
+        self.masked = masked
         self.isEnabled = isEnabled
     }
 }
@@ -90,7 +90,7 @@ public extension MaskRule {
         return .init(
             id: identifier,
             original: original,
-            alias: alias,
+            masked: masked,
             kind: .custom,
             date: date,
             isEnabled: isEnabled
@@ -121,12 +121,12 @@ private extension MaskRule {
     static func validateUniqueness(
         context: ModelContext,
         original: String,
-        alias: String,
+        masked: String,
         excluding rule: MaskRule?
     ) throws {
         let descriptor = FetchDescriptor<MaskRule>(
             predicate: #Predicate<MaskRule> { candidate in
-                candidate.original == original || candidate.alias == alias
+                candidate.original == original || candidate.masked == masked
             }
         )
         let conflicts = try context.fetch(descriptor).filter { candidate in
@@ -144,8 +144,8 @@ private extension MaskRule {
             throw MaskRuleError.duplicateOriginal
         }
 
-        if conflict.alias == alias {
-            throw MaskRuleError.duplicateAlias
+        if conflict.masked == masked {
+            throw MaskRuleError.duplicateMasked
         }
     }
 }
