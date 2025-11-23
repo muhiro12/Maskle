@@ -16,6 +16,9 @@
     "Alias: %@" : {
 
     },
+    "Append new" : {
+
+    },
     "Auto save history" : {
 
     },
@@ -55,7 +58,16 @@
     "Enter text above to see masked output." : {
 
     },
+    "Export" : {
+
+    },
     "History" : {
+
+    },
+    "Import" : {
+
+    },
+    "Import mappings" : {
 
     },
     "Kind" : {
@@ -91,10 +103,16 @@
     "Maskle" : {
 
     },
+    "Merge existing" : {
+
+    },
     "No manual mappings" : {
 
     },
     "No mappings recorded." : {
+
+    },
+    "OK" : {
 
     },
     "Original" : {
@@ -104,6 +122,9 @@
 
     },
     "Original: %@" : {
+
+    },
+    "Replace all" : {
 
     },
     "Restore" : {
