@@ -14,7 +14,7 @@ struct HistoryRowView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             HStack {
-                Text(session.createdAt.formatted(date: .abbreviated, time: .shortened))
+                Text(session.date.formatted(date: .abbreviated, time: .shortened))
                     .font(.headline)
                 Spacer()
                 Label("\(session.mappingCount)", systemImage: "arrow.2.squarepath")

@@ -22,7 +22,7 @@ public enum MaskRuleTransferService {
     }
 
     private struct Payload: Codable {
-        let createdAt: Date
+        let date: Date
         let original: String
         let alias: String
         let kindID: String
@@ -47,7 +47,7 @@ public extension MaskRuleTransferService {
     ) throws -> Data {
         let descriptor = FetchDescriptor<MaskRule>(
             sortBy: [
-                .init(\MaskRule.createdAt, order: .forward)
+                .init(\MaskRule.date, order: .forward)
             ]
         )
         let rules = try context.fetch(descriptor)
@@ -59,7 +59,7 @@ public extension MaskRuleTransferService {
     ) throws -> Data {
         let payloads = rules.map { rule in
             Payload(
-                createdAt: rule.createdAt,
+                date: rule.date,
                 original: rule.original,
                 alias: rule.alias,
                 kindID: rule.kindID,
@@ -166,7 +166,7 @@ private extension MaskRuleTransferService {
     ) {
         MaskRule.create(
             context: context,
-            createdAt: payload.createdAt,
+            date: payload.date,
             original: payload.original,
             alias: payload.alias,
             kind: MappingKind(rawValue: payload.kindID) ?? .custom,
@@ -179,7 +179,7 @@ private extension MaskRuleTransferService {
         to rule: MaskRule
     ) {
         rule.update(
-            createdAt: payload.createdAt,
+            date: payload.date,
             original: payload.original,
             alias: payload.alias,
             kind: MappingKind(rawValue: payload.kindID) ?? .custom,

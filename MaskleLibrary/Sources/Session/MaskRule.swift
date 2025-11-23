@@ -11,7 +11,7 @@ import SwiftData
 /// A persisted manual mapping rule configured by the user.
 @Model
 public final class MaskRule {
-    public private(set) var createdAt = Date()
+    public private(set) var date = Date()
     public private(set) var original = String()
     public private(set) var alias = String()
     public private(set) var kindID = MappingKind.custom.rawValue
@@ -22,7 +22,7 @@ public final class MaskRule {
     @discardableResult
     public static func create(
         context: ModelContext,
-        createdAt: Date = Date(),
+        date: Date = Date(),
         original: String,
         alias: String,
         kind: MappingKind = .custom,
@@ -31,7 +31,7 @@ public final class MaskRule {
         let rule = MaskRule()
         context.insert(rule)
 
-        rule.createdAt = createdAt
+        rule.date = date
         rule.original = original
         rule.alias = alias
         rule.kindID = kind.rawValue
@@ -41,14 +41,14 @@ public final class MaskRule {
     }
 
     public func update(
-        createdAt: Date? = nil,
+        date: Date? = nil,
         original: String,
         alias: String,
         kind: MappingKind,
         isEnabled: Bool
     ) {
-        if let createdAt {
-            self.createdAt = createdAt
+        if let date {
+            self.date = date
         }
         self.original = original
         self.alias = alias
@@ -69,7 +69,7 @@ public extension MaskRule {
             original: original,
             alias: alias,
             kind: kind ?? .custom,
-            createdAt: createdAt,
+            date: date,
             isEnabled: isEnabled
         )
     }

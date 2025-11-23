@@ -22,7 +22,7 @@ final class SessionServiceTests: XCTestCase {
 
         let descriptor = FetchDescriptor<MaskingSession>(
             sortBy: [
-                .init(\.createdAt, order: .reverse)
+                .init(\.date, order: .reverse)
             ]
         )
         let sessions = try context.fetch(descriptor)

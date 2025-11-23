@@ -28,7 +28,7 @@ struct MappingDetailView: View {
                 Text(rule.isEnabled ? "Enabled" : "Disabled")
             }
             Section("Created at") {
-                Text(rule.createdAt.formatted(date: .abbreviated, time: .shortened))
+                Text(rule.date.formatted(date: .abbreviated, time: .shortened))
             }
         }
         .navigationTitle("Mapping Detail")

@@ -30,7 +30,7 @@ struct MappingListView: View {
         _rules = Query(
             FetchDescriptor(
                 sortBy: [
-                    .init(\MaskRule.createdAt, order: .reverse)
+                    .init(\MaskRule.date, order: .reverse)
                 ]
             )
         )
@@ -54,7 +54,7 @@ struct MappingListView: View {
                         HStack {
                             Text(rule.kind?.displayName ?? "Unknown")
                             Spacer()
-                            Text(rule.createdAt.formatted(date: .abbreviated, time: .shortened))
+                            Text(rule.date.formatted(date: .abbreviated, time: .shortened))
                         }
                         .font(.caption)
                         .foregroundStyle(.secondary)

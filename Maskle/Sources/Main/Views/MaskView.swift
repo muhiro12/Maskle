@@ -33,7 +33,7 @@ struct MaskView: View {
         _maskRules = Query(
             FetchDescriptor(
                 sortBy: [
-                    .init(\MaskRule.createdAt, order: .reverse)
+                    .init(\MaskRule.date, order: .reverse)
                 ]
             )
         )

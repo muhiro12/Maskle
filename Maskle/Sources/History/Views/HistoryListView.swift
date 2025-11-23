@@ -26,7 +26,7 @@ struct HistoryListView: View {
         _sessions = Query(
             FetchDescriptor(
                 sortBy: [
-                    .init(\.createdAt, order: .reverse)
+                    .init(\.date, order: .reverse)
                 ]
             )
         )

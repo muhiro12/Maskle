@@ -48,6 +48,6 @@ struct HistoryDetailView: View {
                 }
             }
         }
-        .navigationTitle(session.createdAt.formatted(date: .abbreviated, time: .shortened))
+        .navigationTitle(session.date.formatted(date: .abbreviated, time: .shortened))
     }
 }

@@ -13,7 +13,7 @@ public struct MaskingRule: Identifiable, Equatable {
     public var original: String
     public var alias: String
     public var kind: MappingKind
-    public var createdAt: Date
+    public var date: Date
     public var isEnabled: Bool
 
     public init(
@@ -21,14 +21,14 @@ public struct MaskingRule: Identifiable, Equatable {
         original: String,
         alias: String,
         kind: MappingKind,
-        createdAt: Date = .now,
+        date: Date = Date(),
         isEnabled: Bool = true
     ) {
         self.id = id
         self.original = original
         self.alias = alias
         self.kind = kind
-        self.createdAt = createdAt
+        self.date = date
         self.isEnabled = isEnabled
     }
 }

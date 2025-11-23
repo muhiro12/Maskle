@@ -11,7 +11,7 @@ import SwiftData
 /// A persisted anonymization run with associated mapping records.
 @Model
 public final class MaskingSession {
-    public private(set) var createdAt = Date()
+    public private(set) var date = Date()
     public private(set) var maskedText = String()
     public private(set) var note: String?
 
@@ -29,7 +29,7 @@ public final class MaskingSession {
         let session = MaskingSession()
         context.insert(session)
 
-        session.createdAt = Date()
+        session.date = Date()
         session.maskedText = maskedText
         session.note = note
 
@@ -40,7 +40,7 @@ public final class MaskingSession {
         maskedText: String,
         note: String?
     ) {
-        createdAt = Date()
+        date = Date()
         self.maskedText = maskedText
         self.note = note
     }

@@ -42,7 +42,7 @@ public final class MaskingController {
         do {
             var descriptor = FetchDescriptor<MaskingSession>(
                 sortBy: [
-                    .init(\.createdAt, order: .reverse)
+                    .init(\.date, order: .reverse)
                 ]
             )
             descriptor.fetchLimit = 1
