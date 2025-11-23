@@ -1,7 +1,5 @@
 {
-  "fill" : {
-    "automatic-gradient" : "extended-srgb:0.00000,0.53333,1.00000,1.00000"
-  },
+  "fill" : "automatic",
   "groups" : [
     {
       "layers" : [
@@ -17,6 +15,12 @@
           }
         },
         {
+          "fill" : {
+            "linear-gradient" : [
+              "extended-gray:1.00000,1.00000",
+              "extended-srgb:0.00000,0.53333,1.00000,1.00000"
+            ]
+          },
           "image-name" : "AppIcon.002.png",
           "name" : "AppIcon.002",
           "position" : {
@@ -28,6 +32,9 @@
           }
         },
         {
+          "fill" : {
+            "automatic-gradient" : "extended-srgb:0.00000,0.53333,1.00000,1.00000"
+          },
           "image-name" : "AppIcon.003.png",
           "name" : "AppIcon.003",
           "position" : {
