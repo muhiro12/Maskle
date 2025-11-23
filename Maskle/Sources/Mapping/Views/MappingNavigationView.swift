@@ -14,7 +14,7 @@ struct MappingNavigationView: View {
     var body: some View {
         NavigationStack(path: $path) {
             MappingListView()
-                .navigationDestination(for: ManualRule.self) { rule in
+                .navigationDestination(for: MaskRule.self) { rule in
                     MappingDetailView(rule: rule)
                 }
         }

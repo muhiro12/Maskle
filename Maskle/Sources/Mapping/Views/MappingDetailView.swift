@@ -9,7 +9,7 @@ import MaskleLibrary
 import SwiftUI
 
 struct MappingDetailView: View {
-    let rule: ManualRule
+    let rule: MaskRule
 
     @State private var isEditing = false
 

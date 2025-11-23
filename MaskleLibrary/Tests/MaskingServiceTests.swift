@@ -2,14 +2,14 @@
 import XCTest
 
 final class MaskingServiceTests: XCTestCase {
-    func testAnonymizeAppliesManualRulesAndAutomaticDetection() {
+    func testAnonymizeAppliesMaskRulesAndAutomaticDetection() {
         let options = MaskingOptions(
             isURLMaskingEnabled: true,
             isEmailMaskingEnabled: true,
             isPhoneMaskingEnabled: true
         )
 
-        let manualRules = [
+        let maskRules = [
             MaskingRule(
                 original: "A株式会社",
                 alias: "Client A",
@@ -23,7 +23,7 @@ final class MaskingServiceTests: XCTestCase {
 
         let result = MaskingService.anonymize(
             text: source,
-            manualRules: manualRules,
+            maskRules: maskRules,
             options: options
         )
 

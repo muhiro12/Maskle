@@ -1,5 +1,5 @@
 //
-//  ManualRule.swift
+//  MaskRule.swift
 //
 //
 //  Created by Hiromu Nakano on 2025/11/23.
@@ -10,7 +10,7 @@ import SwiftData
 
 /// A persisted manual mapping rule configured by the user.
 @Model
-public final class ManualRule {
+public final class MaskRule {
     public private(set) var createdAt = Date()
     public private(set) var original = String()
     public private(set) var alias = String()
@@ -27,8 +27,8 @@ public final class ManualRule {
         alias: String,
         kind: MappingKind = .custom,
         isEnabled: Bool = true
-    ) -> ManualRule {
-        let rule = ManualRule()
+    ) -> MaskRule {
+        let rule = MaskRule()
         context.insert(rule)
 
         rule.createdAt = createdAt
@@ -57,7 +57,7 @@ public final class ManualRule {
     }
 }
 
-public extension ManualRule {
+public extension MaskRule {
     var kind: MappingKind? {
         MappingKind(rawValue: kindID)
     }
@@ -75,8 +75,8 @@ public extension ManualRule {
     }
 }
 
-extension ManualRule: Hashable {
-    public static func == (lhs: ManualRule, rhs: ManualRule) -> Bool {
+extension MaskRule: Hashable {
+    public static func == (lhs: MaskRule, rhs: MaskRule) -> Bool {
         lhs.id == rhs.id
     }
 

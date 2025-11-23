@@ -10,7 +10,7 @@ import Foundation
 public enum MaskingService {
     public static func anonymize(
         text: String,
-        manualRules: [MaskingRule],
+        maskRules: [MaskingRule],
         options: MaskingOptions
     ) -> MaskingResult {
         var workingText = text
@@ -18,7 +18,7 @@ public enum MaskingService {
         var generatedMappings = [String: Mapping]()
         var counters = [MappingKind: Int]()
 
-        manualRules
+        maskRules
             .filter {
                 !$0.original.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
                     !$0.alias.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&

@@ -2,11 +2,11 @@
 import SwiftData
 import XCTest
 
-final class ManualRuleTransferServiceTests: XCTestCase {
+final class MaskRuleTransferServiceTests: XCTestCase {
     func testExportAndReplaceImport() throws {
         let context = try makeContext()
 
-        ManualRule.create(
+        MaskRule.create(
             context: context,
             original: "Secret",
             alias: "Alias",
@@ -14,10 +14,10 @@ final class ManualRuleTransferServiceTests: XCTestCase {
         )
         try context.save()
 
-        let data = try ManualRuleTransferService.exportData(context: context)
+        let data = try MaskRuleTransferService.exportData(context: context)
 
         let importContext = try makeContext()
-        let result = try ManualRuleTransferService.importData(
+        let result = try MaskRuleTransferService.importData(
             data,
             context: importContext,
             policy: .replaceAll
@@ -26,7 +26,7 @@ final class ManualRuleTransferServiceTests: XCTestCase {
         XCTAssertEqual(result.insertedCount, 1)
         XCTAssertEqual(result.updatedCount, 0)
 
-        let fetched = try importContext.fetch(FetchDescriptor<ManualRule>())
+        let fetched = try importContext.fetch(FetchDescriptor<MaskRule>())
         XCTAssertEqual(fetched.count, 1)
         XCTAssertEqual(fetched.first?.alias, "Alias")
         XCTAssertEqual(fetched.first?.kindID, MappingKind.person.rawValue)
@@ -35,7 +35,7 @@ final class ManualRuleTransferServiceTests: XCTestCase {
     func testMergeUpdatesExistingRule() throws {
         let context = try makeContext()
 
-        ManualRule.create(
+        MaskRule.create(
             context: context,
             original: "Old",
             alias: "OldAlias",
@@ -44,16 +44,16 @@ final class ManualRuleTransferServiceTests: XCTestCase {
         try context.save()
 
         let payloadContext = try makeContext()
-        ManualRule.create(
+        MaskRule.create(
             context: payloadContext,
             original: "Old",
             alias: "NewAlias",
             kind: .project
         )
 
-        let data = try ManualRuleTransferService.exportData(context: payloadContext)
+        let data = try MaskRuleTransferService.exportData(context: payloadContext)
 
-        let result = try ManualRuleTransferService.importData(
+        let result = try MaskRuleTransferService.importData(
             data,
             context: context,
             policy: .mergeExisting
@@ -62,14 +62,14 @@ final class ManualRuleTransferServiceTests: XCTestCase {
         XCTAssertEqual(result.insertedCount, 0)
         XCTAssertEqual(result.updatedCount, 1)
 
-        let fetched = try context.fetch(FetchDescriptor<ManualRule>())
+        let fetched = try context.fetch(FetchDescriptor<MaskRule>())
         XCTAssertEqual(fetched.first?.alias, "NewAlias")
     }
 
     func testAppendCreatesNewIDsWhenDuplicated() throws {
         let context = try makeContext()
 
-        ManualRule.create(
+        MaskRule.create(
             context: context,
             original: "Keep",
             alias: "KeepAlias",
@@ -78,16 +78,16 @@ final class ManualRuleTransferServiceTests: XCTestCase {
         try context.save()
 
         let payloadContext = try makeContext()
-        ManualRule.create(
+        MaskRule.create(
             context: payloadContext,
             original: "New",
             alias: "NewAlias",
             kind: .other
         )
 
-        let data = try ManualRuleTransferService.exportData(context: payloadContext)
+        let data = try MaskRuleTransferService.exportData(context: payloadContext)
 
-        let result = try ManualRuleTransferService.importData(
+        let result = try MaskRuleTransferService.importData(
             data,
             context: context,
             policy: .appendNew
@@ -96,16 +96,16 @@ final class ManualRuleTransferServiceTests: XCTestCase {
         XCTAssertEqual(result.insertedCount, 1)
         XCTAssertEqual(result.updatedCount, 0)
 
-        let fetched = try context.fetch(FetchDescriptor<ManualRule>())
+        let fetched = try context.fetch(FetchDescriptor<MaskRule>())
         XCTAssertEqual(fetched.count, 2)
         XCTAssertTrue(fetched.contains { $0.original == "New" && $0.alias == "NewAlias" })
     }
 }
 
-private extension ManualRuleTransferServiceTests {
+private extension MaskRuleTransferServiceTests {
     func makeContext() throws -> ModelContext {
         let container = try ModelContainer(
-            for: ManualRule.self,
+            for: MaskRule.self,
             configurations: .init(isStoredInMemoryOnly: true)
         )
         return ModelContext(container)

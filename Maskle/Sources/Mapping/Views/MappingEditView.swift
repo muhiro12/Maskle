@@ -15,7 +15,7 @@ struct MappingEditView: View {
     @Environment(\.dismiss)
     private var dismiss
 
-    let rule: ManualRule?
+    let rule: MaskRule?
 
     @Binding var isPresented: Bool
 
@@ -25,7 +25,7 @@ struct MappingEditView: View {
     @State private var isEnabled = true
 
     init(
-        rule: ManualRule?,
+        rule: MaskRule?,
         isPresented: Binding<Bool>,
         prefilledOriginal: String = String(),
         prefilledAlias: String = String(),
@@ -119,7 +119,7 @@ private extension MappingEditView {
                 isEnabled: isEnabled
             )
         } else {
-            ManualRule.create(
+            MaskRule.create(
                 context: context,
                 original: trimmedOriginal,
                 alias: trimmedAlias,

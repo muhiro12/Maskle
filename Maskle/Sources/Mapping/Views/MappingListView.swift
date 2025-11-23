@@ -14,11 +14,11 @@ struct MappingListView: View {
     @Environment(\.modelContext)
     private var context
 
-    @Query private var rules: [ManualRule]
+    @Query private var rules: [MaskRule]
 
     @State private var isPresentingCreate = false
     @State private var isExporting = false
-    @State private var exportDocument = ManualRuleExportDocument(data: Data())
+    @State private var exportDocument = MaskRuleExportDocument(data: Data())
     @State private var isImporting = false
     @State private var pendingImportData: Data?
     @State private var isChoosingImportPolicy = false
@@ -30,7 +30,7 @@ struct MappingListView: View {
         _rules = Query(
             FetchDescriptor(
                 sortBy: [
-                    .init(\ManualRule.createdAt, order: .reverse)
+                    .init(\MaskRule.createdAt, order: .reverse)
                 ]
             )
         )
@@ -142,10 +142,10 @@ struct MappingListView: View {
 private extension MappingListView {
     func exportRules() {
         do {
-            let data = try ManualRuleTransferService.exportData(
+            let data = try MaskRuleTransferService.exportData(
                 context: context
             )
-            exportDocument = ManualRuleExportDocument(data: data)
+            exportDocument = MaskRuleExportDocument(data: data)
             isExporting = true
         } catch {
             presentError(message: error.localizedDescription)
@@ -162,13 +162,13 @@ private extension MappingListView {
     }
 
     func applyImport(
-        policy: ManualRuleTransferService.ImportPolicy
+        policy: MaskRuleTransferService.ImportPolicy
     ) {
         guard let data = pendingImportData else {
             return
         }
         do {
-            let result = try ManualRuleTransferService.importData(
+            let result = try MaskRuleTransferService.importData(
                 data,
                 context: context,
                 policy: policy

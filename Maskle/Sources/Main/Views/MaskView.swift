@@ -21,7 +21,7 @@ struct MaskView: View {
     @AppStorage(.isHistoryAutoSaveEnabled)
     private var isHistoryAutoSaveEnabled = true
 
-    @Query private var manualRules: [ManualRule]
+    @Query private var maskRules: [MaskRule]
 
     @State private var controller = MaskingController()
     @State private var disabledRuleIDs = Set<PersistentIdentifier>()
@@ -30,10 +30,10 @@ struct MaskView: View {
     @State private var pendingOriginalForMapping = String()
 
     init() {
-        _manualRules = Query(
+        _maskRules = Query(
             FetchDescriptor(
                 sortBy: [
-                    .init(\ManualRule.createdAt, order: .reverse)
+                    .init(\MaskRule.createdAt, order: .reverse)
                 ]
             )
         )
@@ -51,11 +51,11 @@ struct MaskView: View {
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Menu {
-                    if manualRules.isEmpty {
+                    if maskRules.isEmpty {
                         Text("No manual mappings")
                             .foregroundStyle(.secondary)
                     } else {
-                        ForEach(manualRules) { rule in
+                        ForEach(maskRules) { rule in
                             Button {
                                 toggleDisabled(rule: rule)
                             } label: {
@@ -79,7 +79,7 @@ struct MaskView: View {
         .onChange(of: controller.sourceText) { _, _ in
             anonymizeLive()
         }
-        .onChange(of: manualRules) { _, _ in
+        .onChange(of: maskRules) { _, _ in
             anonymizeLive()
         }
         .onChange(of: disabledRuleIDs) { _, _ in
@@ -133,8 +133,8 @@ private extension MaskView {
         }
     }
 
-    func activeManualRules() -> [MaskingRule] {
-        manualRules
+    func activeMaskRules() -> [MaskingRule] {
+        maskRules
             .filter { rule in
                 rule.isEnabled && disabledRuleIDs.contains(rule.persistentModelID) == false
             }
@@ -232,7 +232,7 @@ private extension MaskView {
                     controller.anonymize(
                         context: context,
                         options: maskingOptions(),
-                        manualRules: activeManualRules(),
+                        maskRules: activeMaskRules(),
                         shouldSaveHistory: true,
                         isHistoryAutoSaveEnabled: isHistoryAutoSaveEnabled
                     )
@@ -251,7 +251,7 @@ private extension MaskView {
         controller.anonymize(
             context: context,
             options: maskingOptions(),
-            manualRules: activeManualRules(),
+            maskRules: activeMaskRules(),
             shouldSaveHistory: false,
             isHistoryAutoSaveEnabled: isHistoryAutoSaveEnabled
         )
@@ -269,7 +269,7 @@ private extension MaskView {
         isPresentingMappingCreation = true
     }
 
-    func toggleDisabled(rule: ManualRule) {
+    func toggleDisabled(rule: MaskRule) {
         if disabledRuleIDs.contains(rule.persistentModelID) {
             disabledRuleIDs.remove(rule.persistentModelID)
         } else {

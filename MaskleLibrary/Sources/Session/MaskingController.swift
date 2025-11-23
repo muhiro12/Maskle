@@ -59,13 +59,13 @@ public final class MaskingController {
     public func anonymize(
         context: ModelContext,
         options: MaskingOptions,
-        manualRules: [MaskingRule],
+        maskRules: [MaskingRule],
         shouldSaveHistory: Bool,
         isHistoryAutoSaveEnabled: Bool
     ) {
         let generated = MaskingService.anonymize(
             text: sourceText,
-            manualRules: manualRules,
+            maskRules: maskRules,
             options: options
         )
         result = generated

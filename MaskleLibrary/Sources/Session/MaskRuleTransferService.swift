@@ -1,5 +1,5 @@
 //
-//  ManualRuleTransferService.swift
+//  MaskRuleTransferService.swift
 //
 //
 //  Created by Hiromu Nakano on 2025/11/23.
@@ -8,7 +8,7 @@
 import Foundation
 import SwiftData
 
-public enum ManualRuleTransferService {
+public enum MaskRuleTransferService {
     public enum ImportPolicy {
         case replaceAll
         case mergeExisting
@@ -41,13 +41,13 @@ public enum ManualRuleTransferService {
     }
 }
 
-public extension ManualRuleTransferService {
+public extension MaskRuleTransferService {
     static func exportData(
         context: ModelContext
     ) throws -> Data {
-        let descriptor = FetchDescriptor<ManualRule>(
+        let descriptor = FetchDescriptor<MaskRule>(
             sortBy: [
-                .init(\ManualRule.createdAt, order: .forward)
+                .init(\MaskRule.createdAt, order: .forward)
             ]
         )
         let rules = try context.fetch(descriptor)
@@ -55,7 +55,7 @@ public extension ManualRuleTransferService {
     }
 
     static func exportData(
-        rules: [ManualRule]
+        rules: [MaskRule]
     ) throws -> Data {
         let payloads = rules.map { rule in
             Payload(
@@ -98,7 +98,7 @@ public extension ManualRuleTransferService {
         }
 
         let existing = try context.fetch(
-            FetchDescriptor<ManualRule>()
+            FetchDescriptor<MaskRule>()
         )
 
         var insertedCount = 0
@@ -148,7 +148,7 @@ public extension ManualRuleTransferService {
         try context.save()
 
         let totalCount = try context.fetch(
-            FetchDescriptor<ManualRule>()
+            FetchDescriptor<MaskRule>()
         ).count
 
         return .init(
@@ -159,12 +159,12 @@ public extension ManualRuleTransferService {
     }
 }
 
-private extension ManualRuleTransferService {
+private extension MaskRuleTransferService {
     private static func insert(
         payload: Payload,
         context: ModelContext
     ) {
-        ManualRule.create(
+        MaskRule.create(
             context: context,
             createdAt: payload.createdAt,
             original: payload.original,
@@ -176,7 +176,7 @@ private extension ManualRuleTransferService {
 
     private static func apply(
         payload: Payload,
-        to rule: ManualRule
+        to rule: MaskRule
     ) {
         rule.update(
             createdAt: payload.createdAt,

@@ -19,7 +19,7 @@ final class MaskingControllerTests: XCTestCase {
                 isEmailMaskingEnabled: true,
                 isPhoneMaskingEnabled: true
             ),
-            manualRules: [],
+            maskRules: [],
             shouldSaveHistory: false,
             isHistoryAutoSaveEnabled: true
         )
@@ -52,7 +52,7 @@ final class MaskingControllerTests: XCTestCase {
                 isEmailMaskingEnabled: true,
                 isPhoneMaskingEnabled: true
             ),
-            manualRules: [],
+            maskRules: [],
             shouldSaveHistory: false,
             isHistoryAutoSaveEnabled: true
         )
@@ -72,7 +72,7 @@ final class MaskingControllerTests: XCTestCase {
                 isEmailMaskingEnabled: true,
                 isPhoneMaskingEnabled: true
             ),
-            manualRules: [],
+            maskRules: [],
             shouldSaveHistory: false,
             isHistoryAutoSaveEnabled: true
         )
