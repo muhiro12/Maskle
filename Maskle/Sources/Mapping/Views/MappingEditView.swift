@@ -22,6 +22,7 @@ struct MappingEditView: View {
     @State private var original = String()
     @State private var alias = String()
     @State private var isEnabled = true
+    @State private var alertMessage: String?
 
     init(
         rule: MaskRule?,
@@ -73,6 +74,20 @@ struct MappingEditView: View {
         .onAppear {
             load()
         }
+        .alert(
+            alertMessage ?? "Error",
+            isPresented: .init(
+                get: { alertMessage != nil },
+                set: { isPresented in
+                    if isPresented == false {
+                        alertMessage = nil
+                    }
+                }
+            )
+        ) {
+            Button("OK", role: .cancel) {
+            }
+        }
     }
 }
 
@@ -100,19 +115,25 @@ private extension MappingEditView {
         guard trimmedOriginal.isEmpty == false, trimmedAlias.isEmpty == false else {
             return
         }
-        if let rule {
-            rule.update(
-                original: trimmedOriginal,
-                alias: trimmedAlias,
-                isEnabled: isEnabled
-            )
-        } else {
-            MaskRule.create(
-                context: context,
-                original: trimmedOriginal,
-                alias: trimmedAlias,
-                isEnabled: isEnabled
-            )
+        do {
+            if let rule {
+                try rule.update(
+                    context: context,
+                    original: trimmedOriginal,
+                    alias: trimmedAlias,
+                    isEnabled: isEnabled
+                )
+            } else {
+                try MaskRule.create(
+                    context: context,
+                    original: trimmedOriginal,
+                    alias: trimmedAlias,
+                    isEnabled: isEnabled
+                )
+            }
+        } catch {
+            alertMessage = error.localizedDescription
+            return
         }
         isPresented = false
         dismiss()

@@ -6,7 +6,7 @@ final class MaskRuleTransferServiceTests: XCTestCase {
     func testExportAndReplaceImport() throws {
         let context = try makeContext()
 
-        MaskRule.create(
+        try MaskRule.create(
             context: context,
             original: "Secret",
             alias: "Alias"
@@ -33,7 +33,7 @@ final class MaskRuleTransferServiceTests: XCTestCase {
     func testMergeUpdatesExistingRule() throws {
         let context = try makeContext()
 
-        MaskRule.create(
+        try MaskRule.create(
             context: context,
             original: "Old",
             alias: "OldAlias"
@@ -41,7 +41,7 @@ final class MaskRuleTransferServiceTests: XCTestCase {
         try context.save()
 
         let payloadContext = try makeContext()
-        MaskRule.create(
+        try MaskRule.create(
             context: payloadContext,
             original: "Old",
             alias: "NewAlias"
@@ -65,7 +65,7 @@ final class MaskRuleTransferServiceTests: XCTestCase {
     func testAppendCreatesNewIDsWhenDuplicated() throws {
         let context = try makeContext()
 
-        MaskRule.create(
+        try MaskRule.create(
             context: context,
             original: "Keep",
             alias: "KeepAlias"
@@ -73,7 +73,7 @@ final class MaskRuleTransferServiceTests: XCTestCase {
         try context.save()
 
         let payloadContext = try makeContext()
-        MaskRule.create(
+        try MaskRule.create(
             context: payloadContext,
             original: "New",
             alias: "NewAlias"

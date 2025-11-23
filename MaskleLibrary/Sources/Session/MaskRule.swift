@@ -8,6 +8,20 @@
 import Foundation
 import SwiftData
 
+public enum MaskRuleError: LocalizedError {
+    case duplicateOriginal
+    case duplicateAlias
+
+    public var errorDescription: String? {
+        switch self {
+        case .duplicateOriginal:
+            "The original text is already registered."
+        case .duplicateAlias:
+            "The alias is already registered."
+        }
+    }
+}
+
 /// A persisted manual mapping rule configured by the user.
 @Model
 public final class MaskRule {
@@ -28,7 +42,14 @@ public final class MaskRule {
         original: String,
         alias: String,
         isEnabled: Bool = true
-    ) -> MaskRule {
+    ) throws -> MaskRule {
+        try validateUniqueness(
+            context: context,
+            original: original,
+            alias: alias,
+            excluding: nil
+        )
+
         let rule = MaskRule()
         context.insert(rule)
 
@@ -41,11 +62,19 @@ public final class MaskRule {
     }
 
     public func update(
+        context: ModelContext,
         date: Date? = nil,
         original: String,
         alias: String,
         isEnabled: Bool
-    ) {
+    ) throws {
+        try Self.validateUniqueness(
+            context: context,
+            original: original,
+            alias: alias,
+            excluding: self
+        )
+
         if let date {
             self.date = date
         }
@@ -85,5 +114,38 @@ private extension PersistentIdentifier {
             return UUID().uuidString
         }
         return data.base64EncodedString()
+    }
+}
+
+private extension MaskRule {
+    static func validateUniqueness(
+        context: ModelContext,
+        original: String,
+        alias: String,
+        excluding rule: MaskRule?
+    ) throws {
+        let descriptor = FetchDescriptor<MaskRule>(
+            predicate: #Predicate<MaskRule> { candidate in
+                candidate.original == original || candidate.alias == alias
+            }
+        )
+        let conflicts = try context.fetch(descriptor).filter { candidate in
+            guard let rule else {
+                return true
+            }
+            return candidate.persistentModelID != rule.persistentModelID
+        }
+
+        guard let conflict = conflicts.first else {
+            return
+        }
+
+        if conflict.original == original {
+            throw MaskRuleError.duplicateOriginal
+        }
+
+        if conflict.alias == alias {
+            throw MaskRuleError.duplicateAlias
+        }
     }
 }

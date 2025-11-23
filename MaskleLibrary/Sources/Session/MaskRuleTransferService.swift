@@ -105,36 +105,37 @@ public extension MaskRuleTransferService {
         switch policy {
         case .replaceAll:
             existing.forEach(context.delete)
-            transfer.rules.forEach { payload in
-                insert(
+            for payload in transfer.rules {
+                try insert(
                     payload: payload,
                     context: context
                 )
                 insertedCount += 1
             }
         case .mergeExisting:
-            transfer.rules.forEach { payload in
+            for payload in transfer.rules {
                 if let match = existing.first(where: {
-                    $0.original == payload.original &&
+                    $0.original == payload.original ||
                         $0.alias == payload.alias
                 }) {
-                    apply(
+                    try apply(
                         payload: payload,
-                        to: match
+                        to: match,
+                        context: context
                     )
                     updatedCount += 1
-                    return
+                    continue
                 }
 
-                insert(
+                try insert(
                     payload: payload,
                     context: context
                 )
                 insertedCount += 1
             }
         case .appendNew:
-            transfer.rules.forEach { payload in
-                insert(
+            for payload in transfer.rules {
+                try insert(
                     payload: payload,
                     context: context
                 )
@@ -160,8 +161,8 @@ private extension MaskRuleTransferService {
     private static func insert(
         payload: Payload,
         context: ModelContext
-    ) {
-        MaskRule.create(
+    ) throws {
+        try MaskRule.create(
             context: context,
             date: payload.date,
             original: payload.original,
@@ -172,9 +173,11 @@ private extension MaskRuleTransferService {
 
     private static func apply(
         payload: Payload,
-        to rule: MaskRule
-    ) {
-        rule.update(
+        to rule: MaskRule,
+        context: ModelContext
+    ) throws {
+        try rule.update(
+            context: context,
             date: payload.date,
             original: payload.original,
             alias: payload.alias,

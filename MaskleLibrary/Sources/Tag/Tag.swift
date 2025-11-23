@@ -16,8 +16,32 @@ public final class Tag {
 
     private init() {}
 
-    /// Creates or fetches an existing tag for the given name and type.
+    /// Creates or returns an existing tag with the given `name` and `type`.
     public static func create(
+        context: ModelContext,
+        name: String,
+        type: TagType
+    ) throws -> Tag {
+        let typeID = type.rawValue
+        var descriptor = FetchDescriptor<Tag>(
+            predicate: #Predicate<Tag> { tag in
+                tag.name == name && tag.typeID == typeID
+            }
+        )
+        descriptor.fetchLimit = 1
+        if let existing = try context.fetch(descriptor).first {
+            return existing
+        }
+
+        let tag = Tag()
+        context.insert(tag)
+        tag.name = name
+        tag.typeID = type.rawValue
+        return tag
+    }
+
+    /// Testing helper: creates a tag without checking duplicates.
+    public static func createIgnoringDuplicates(
         context: ModelContext,
         name: String,
         type: TagType
